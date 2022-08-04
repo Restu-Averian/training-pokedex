@@ -3,14 +3,14 @@ import 'antd/dist/antd.css';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import PaginationPokemon from '../components/PaginationPokemon';
 // import CardComp from '../components/CardComp';
 
 function ListPokePage() {
     const [dataPoke, setdataPoke] = useState(null)
     const [loading, setloading] = useState(true)
-    const [urlData, seturlData] = useState(null)
-    const [img,setImg] = useState(null)
-    const baseUrl = 'https://pokeapi.co/api/v2/pokemon'
+    let [limit,setLimit] = useState(20)
+    const baseUrl = `https://pokeapi.co/api/v2/pokemon/?offset=0&limit=${limit}`
 
 
     const fetchDataPoke = async(api)=>{
@@ -18,6 +18,7 @@ function ListPokePage() {
             let dataPoke = await axios.get(api)
             setdataPoke(dataPoke.data)
             setloading(false)
+        console.log("url : ",api)
            
             
         }catch(e){
@@ -32,6 +33,16 @@ function ListPokePage() {
     const previousPage = ()=>{
         fetchDataPoke(dataPoke.previous)
     }
+
+    /* Still having bugs */
+    // const moreData = ()=>{
+    //     setLimit(limit+=20)
+    //     let url = `${baseUrl}/?offset=0&limit=${limit}` 
+    //     fetchDataPoke(url)
+
+    // }
+
+
     useEffect(() => {
         fetchDataPoke(baseUrl)
     }, [])
@@ -39,14 +50,7 @@ function ListPokePage() {
 
     return (
         <ContentCustom className="site-card-wrapper">
-            <Row gutter={8} style={{ marginBottom:10 }}>
-                <Col span={2}>
-                    <Button size='large' onClick={previousPage}>Previous</Button>
-                </Col>
-                <Col span={2}>
-                    <Button type='primary' size='large' onClick={nextPage}>Next</Button>
-                </Col>
-            </Row>
+            <PaginationPokemon previousPage={previousPage} nextPage={nextPage}/>
             <Row gutter={16}>
                 {loading?(
                     <Col span={8}>
@@ -80,6 +84,11 @@ function ListPokePage() {
                 )}
                 
             </Row>
+            
+            {/* Still having bugs */}
+            {/* <Button onClick={moreData}>More</Button> */}
+            <PaginationPokemon previousPage={previousPage} nextPage={nextPage}/>
+
         </ContentCustom>
     )
 }
