@@ -51,7 +51,7 @@ function ListPokePage() {
     return (
         <ContentCustom className="site-card-wrapper">
             <PaginationPokemon previousPage={previousPage} nextPage={nextPage}/>
-            <Row gutter={16}>
+            <Row >
                 {loading?(
                     <Col span={8}>
                         <Card title="Card title" bordered={false}>
@@ -63,7 +63,7 @@ function ListPokePage() {
                         {dataPoke.results.map(
                             (data)=>{
                                 return(     
-                                    <Col key={data.name} span={6}>
+                                    <Col  xs={19}  xl={6} md={9} key={data.name} style={{ margin:'auto' }}>
                                         <Card 
                                         title={data.name} 
                                         size="small"
